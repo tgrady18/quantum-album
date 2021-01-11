@@ -3,14 +3,16 @@ const prompt = require('prompt-sync')();
 var thesaurus = require("thesaurus");
 var nodemailer = require('nodemailer');
 var randomWords = require('random-words');
-var secretToken = "YOUR_TOKENx"
+var spotifyUserBearerToken = "YOUR_TOKENx"
+var openWeatherToken = "YOUR_TOKEN"
 var cityName = 'Stockholm'
 var country = "SE"
 var Promise = require('bluebird')
   , http = require('http')
   , request = require('request')
   , url = require('url')
-  var token = "Bearer "+secretToken
+
+  var spotifyToken = "Bearer "+spotifyUserBearerToken
 
 var s = http.createServer(function(req, res) {
   res.statusCode = 200
@@ -20,7 +22,7 @@ var s = http.createServer(function(req, res) {
 var userEmail = prompt('What is your email?: ')
 
 function weatherRequester() {
-    var href = "https://api.openweathermap.org/data/2.5/weather?q="+cityName+', '+country+"&appid=13550ecafbcc3d603bf7d15a94992c27";
+    var href = "https://api.openweathermap.org/data/2.5/weather?q="+cityName+', '+country+"&appid="+openWeatherToken;
     this.request = Promise.promisifyAll(
       request.defaults({
         uri: href
@@ -40,7 +42,7 @@ var transporter = nodemailer.createTransport({
 
 var weatherPool = new weatherRequester();
 var count = 0;
-weatherPool.request.get({headers:{ "Authorization":token}}, function(err, res, body) {
+weatherPool.request.get({headers:{ "Authorization":spotifyToken}}, function(err, res, body) {
 
     if (err) {
         console.log(err)
@@ -53,7 +55,7 @@ weatherPool.request.get({headers:{ "Authorization":token}}, function(err, res, b
             }
         function spotifyRequester() {
             var href = "https://api.spotify.com/v1/search?q={"+quantumQuery+"}&hipster=false&type=album&limit=50&offset=1";
-              request.headers = { "Authorization":token}
+              request.headers = { "Authorization":spotifyToken}
             this.request = Promise.promisifyAll(
               request.defaults({
                 uri: href
@@ -65,7 +67,7 @@ weatherPool.request.get({headers:{ "Authorization":token}}, function(err, res, b
 
           var pool = new spotifyRequester();
 
-        pool.request.get({headers:{ "Authorization":token}}, function(err, res, body) {
+        pool.request.get({headers:{ "Authorization":spotifyToken}}, function(err, res, body) {
     
             if (err) {
               console.log('FAIL', err.message)
