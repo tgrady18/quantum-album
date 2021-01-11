@@ -18,7 +18,6 @@ var s = http.createServer(function(req, res) {
   res.end(JSON.stringify(req.headers))
 })
 var userEmail = prompt('What is your email?: ')
-s.listen(8888)
 
 function weatherRequester() {
     var href = "https://api.openweathermap.org/data/2.5/weather?q="+cityName+', '+country+"&appid=13550ecafbcc3d603bf7d15a94992c27";
