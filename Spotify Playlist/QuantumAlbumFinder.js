@@ -3,10 +3,15 @@ const prompt = require('prompt-sync')();
 var thesaurus = require("thesaurus");
 var nodemailer = require('nodemailer');
 var randomWords = require('random-words');
-var spotifyUserBearerToken = "YOUR_TOKENx"
-var openWeatherToken = "YOUR_TOKEN"
-var cityName = 'Stockholm'
-var country = "SE"
+require('dotenv').config()
+
+//var values can be changed in .env, must be set locally as they are excluded in commit
+var spotifyUserBearerToken = process.env.SPOTIFY_USER_BEARER_TOKEN
+var openWeatherToken = process.env.OPEN_WEATHER_TOKEN
+var cityName = process.env.CITY_NAME
+var country = process.env.COUNTRY
+var email = process.env.EMAIL
+var password = process.env.PASSWORD
 var Promise = require('bluebird')
   , http = require('http')
   , request = require('request')
@@ -34,8 +39,8 @@ function weatherRequester() {
 var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'quantumalbum@gmail.com',
-      pass: 'wizardHarry'
+      user: email,
+      pass: password
     }
   });
   
